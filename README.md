@@ -16,6 +16,8 @@ user=<earthdata username> pass=<earthdata pass> from=YYYY-MM-DD end=YYYY-MM-DD p
 ```  
 Here __from__ and __end__ specify the time range for which you want to download the MODIS Dataset and __product__ is the product selected in step 2.
 
-7. Find Counties of interest from [https://www2.census.gov/geo/docs/reference/codes/files/national_county.txt](https://www2.census.gov/geo/docs/reference/codes/files/national_county.txt) and add their FIPS number to `listCount.txt`.
-8. Run: `make crop`  
+7. Run: `make stitch` to stitch the individual tiles to get the whole US mainland.
+
+8. Find Counties of interest from [https://www2.census.gov/geo/docs/reference/codes/files/national_county.txt](https://www2.census.gov/geo/docs/reference/codes/files/national_county.txt) and add their FIPS number to `listCount.txt`.
+9. Run: `make crop`  
  This will crop the datasets by counties and arrange them in date wise folders in the `data` folder.
