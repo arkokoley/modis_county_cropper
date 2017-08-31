@@ -1,0 +1,417 @@
+/* Metadata file CATHEAD.MET */
+
+/* This metadata configuration file (MCF) was built according to the */
+/* information provided to ECS.  This MCF has been integrated and the */
+/* interface with ECS validated AS IS.  Should you wish to change any */
+/* information in this MCF, please contact ECS immediately at */
+/* metadata@eos.hitc.com.  Undocumented changes to the MCF will void */
+/* the interface validation and can result in delays in integrating */
+/* science software. */
+
+GROUP                  = INVENTORYMETADATA
+  GROUPTYPE            = MASTERGROUP
+
+  GROUP                  = ECSDATAGRANULE
+
+    OBJECT                 = LOCALGRANULEID
+      NUM_VAL              = 1
+      VALUE                = "MOD11_L2.A1997224.1917.002.1999099152630.hdf"
+    END_OBJECT             = LOCALGRANULEID
+
+    OBJECT                 = PRODUCTIONDATETIME
+      NUM_VAL              = 1
+      VALUE                = "1999-04-09T15:26:30.000Z"
+    END_OBJECT             = PRODUCTIONDATETIME
+
+    OBJECT                 = DAYNIGHTFLAG
+      NUM_VAL              = 1
+      VALUE                = "Day"
+    END_OBJECT             = DAYNIGHTFLAG
+
+    OBJECT                 = REPROCESSINGACTUAL
+      NUM_VAL              = 1
+      VALUE                = "processed once"
+    END_OBJECT             = REPROCESSINGACTUAL
+
+    OBJECT                 = LOCALVERSIONID
+      NUM_VAL              = 1
+      VALUE                = "SCF V2.1"
+    END_OBJECT             = LOCALVERSIONID
+
+    OBJECT                 = REPROCESSINGPLANNED
+      NUM_VAL              = 1
+      VALUE                = "further update is anticipated"
+    END_OBJECT             = REPROCESSINGPLANNED
+
+  END_GROUP              = ECSDATAGRANULE
+
+  GROUP                  = MEASUREDPARAMETER
+
+    OBJECT                 = MEASUREDPARAMETERCONTAINER
+      CLASS                = "1"
+
+      GROUP                  = QAFLAGS
+        CLASS                = "1"
+
+        OBJECT                 = AUTOMATICQUALITYFLAGEXPLANATION
+          NUM_VAL              = 1
+          CLASS                = "1"
+          VALUE                = "Passed if algorithm ran within bounds of execution constraints.  Suspect if bounds of execution constraints violated.  Failed if PGE failed."
+        END_OBJECT             = AUTOMATICQUALITYFLAGEXPLANATION
+
+        OBJECT                 = AUTOMATICQUALITYFLAG
+          NUM_VAL              = 1
+          CLASS                = "1"
+          VALUE                = "Passed"
+        END_OBJECT             = AUTOMATICQUALITYFLAG
+
+      END_GROUP              = QAFLAGS
+
+      GROUP                  = QASTATS
+        CLASS                = "1"
+
+        OBJECT                 = QAPERCENTMISSINGDATA
+          NUM_VAL              = 1
+          CLASS                = "1"
+          VALUE                = 0
+        END_OBJECT             = QAPERCENTMISSINGDATA
+
+        OBJECT                 = QAPERCENTOUTOFBOUNDSDATA
+          NUM_VAL              = 1
+          CLASS                = "1"
+          VALUE                = 0
+        END_OBJECT             = QAPERCENTOUTOFBOUNDSDATA
+
+        OBJECT                 = QAPERCENTCLOUDCOVER
+          NUM_VAL              = 1
+          CLASS                = "1"
+          VALUE                = 53
+        END_OBJECT             = QAPERCENTCLOUDCOVER
+
+        OBJECT                 = QAPERCENTINTERPOLATEDDATA
+          NUM_VAL              = 1
+          CLASS                = "1"
+          VALUE                = 0
+        END_OBJECT             = QAPERCENTINTERPOLATEDDATA
+
+      END_GROUP              = QASTATS
+
+      OBJECT                 = PARAMETERNAME
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = "MODIS LST"
+      END_OBJECT             = PARAMETERNAME
+
+    END_OBJECT             = MEASUREDPARAMETERCONTAINER
+
+  END_GROUP              = MEASUREDPARAMETER
+
+  GROUP                  = ORBITCALCULATEDSPATIALDOMAIN
+
+    OBJECT                 = ORBITCALCULATEDSPATIALDOMAINCONTAINER
+      CLASS                = "1"
+
+      OBJECT                 = EQUATORCROSSINGDATE
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = "1997-08-12"
+      END_OBJECT             = EQUATORCROSSINGDATE
+
+      OBJECT                 = EQUATORCROSSINGTIME
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = "19:33:37.768816"
+      END_OBJECT             = EQUATORCROSSINGTIME
+
+      OBJECT                 = ORBITNUMBER
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = 12203
+      END_OBJECT             = ORBITNUMBER
+
+      OBJECT                 = EQUATORCROSSINGLONGITUDE
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = -135.280240
+      END_OBJECT             = EQUATORCROSSINGLONGITUDE
+
+    END_OBJECT             = ORBITCALCULATEDSPATIALDOMAINCONTAINER
+
+  END_GROUP              = ORBITCALCULATEDSPATIALDOMAIN
+
+  GROUP                  = COLLECTIONDESCRIPTIONCLASS
+
+    OBJECT                 = VERSIONID
+      NUM_VAL              = 1
+      VALUE                = 0
+    END_OBJECT             = VERSIONID
+
+    OBJECT                 = SHORTNAME
+      NUM_VAL              = 1
+      VALUE                = "MOD11_L2"
+    END_OBJECT             = SHORTNAME
+
+  END_GROUP              = COLLECTIONDESCRIPTIONCLASS
+
+  GROUP                  = INPUTGRANULE
+
+    OBJECT                 = INPUTPOINTER
+      NUM_VAL              = 2000
+      VALUE                = ("MOD03.A1997224.1917.001.1999097010158.hdf", "MOD021KM.A1997224.1917.002.1999097225717.hdf", "MOD35_L2.A1997224.1917.002.1999098031805.hdf", "MOD10_L2.A1997224.1917.002.1999099075404.hdf", "
+          MOD07_L2.A1997224.1917.002.1999098032040.hdf", "MOD.AM1.V2.landcover_1km.L3.1992304.h11.v02.1997190", "MOD.AM1.V2.landcover_1km.L3.1992304.h11.v03.1997190", "MOD.AM1.V2.landcover_1km.L3.1992304.h12.v03.1997190", "
+          MOD.AM1.V2.landcover_1km.L3.1992304.h10.v03.1997190", "MOD.AM1.V2.landcover_1km.L3.1992304.h11.v04.1997190", "MOD.AM1.V2.landcover_1km.L3.1992304.h09.v03.1997190", "MOD.AM1.V2.landcover_1km.L3.1992304.h10.v04.1997190", "
+          MOD.AM1.V2.landcover_1km.L3.1992304.h09.v04.1997190", "MOD.AM1.V2.landcover_1km.L3.1992304.h08.v04.1997190", "MOD.AM1.V2.landcover_1km.L3.1992304.h09.v05.1997190", "MOD.AM1.V2.landcover_1km.L3.1992304.h08.v05.1997190", "UR_sol_term_tbls", 
+          "tir_term_tbls", "f_bin2_1")
+    END_OBJECT             = INPUTPOINTER
+
+  END_GROUP              = INPUTGRANULE
+
+  GROUP                  = SPATIALDOMAINCONTAINER
+
+    GROUP                  = HORIZONTALSPATIALDOMAINCONTAINER
+
+      GROUP                  = GPOLYGON
+
+        OBJECT                 = GPOLYGONCONTAINER
+          CLASS                = "1"
+
+          GROUP                  = GRINGPOINT
+            CLASS                = "1"
+
+            OBJECT                 = GRINGPOINTLONGITUDE
+              NUM_VAL              = 4
+              CLASS                = "1"
+              VALUE                = (-138.626511, -99.641266, -111.994911, -139.534164)
+            END_OBJECT             = GRINGPOINTLONGITUDE
+
+            OBJECT                 = GRINGPOINTLATITUDE
+              NUM_VAL              = 4
+              CLASS                = "1"
+              VALUE                = (60.384548, 54.821392, 38.696171, 42.628971)
+            END_OBJECT             = GRINGPOINTLATITUDE
+
+            OBJECT                 = GRINGPOINTSEQUENCENO
+              NUM_VAL              = 4
+              CLASS                = "1"
+              VALUE                = (1, 2, 3, 4)
+            END_OBJECT             = GRINGPOINTSEQUENCENO
+
+          END_GROUP              = GRINGPOINT
+
+          GROUP                  = GRING
+            CLASS                = "1"
+
+            OBJECT                 = EXCLUSIONGRINGFLAG
+              NUM_VAL              = 1
+              CLASS                = "1"
+              VALUE                = "N"
+            END_OBJECT             = EXCLUSIONGRINGFLAG
+
+          END_GROUP              = GRING
+
+        END_OBJECT             = GPOLYGONCONTAINER
+
+      END_GROUP              = GPOLYGON
+
+    END_GROUP              = HORIZONTALSPATIALDOMAINCONTAINER
+
+  END_GROUP              = SPATIALDOMAINCONTAINER
+
+  GROUP                  = RANGEDATETIME
+
+    OBJECT                 = RANGEENDINGDATE
+      NUM_VAL              = 1
+      VALUE                = "1997-08-12"
+    END_OBJECT             = RANGEENDINGDATE
+
+    OBJECT                 = RANGEENDINGTIME
+      NUM_VAL              = 1
+      VALUE                = "19:22:09.000000"
+    END_OBJECT             = RANGEENDINGTIME
+
+    OBJECT                 = RANGEBEGINNINGDATE
+      NUM_VAL              = 1
+      VALUE                = "1997-08-12"
+    END_OBJECT             = RANGEBEGINNINGDATE
+
+    OBJECT                 = RANGEBEGINNINGTIME
+      NUM_VAL              = 1
+      VALUE                = "19:17:09.000000"
+    END_OBJECT             = RANGEBEGINNINGTIME
+
+  END_GROUP              = RANGEDATETIME
+
+  GROUP                  = PGEVERSIONCLASS
+
+    OBJECT                 = PGEVERSION
+      NUM_VAL              = 1
+      VALUE                = "V2.1"
+    END_OBJECT             = PGEVERSION
+
+  END_GROUP              = PGEVERSIONCLASS
+
+  GROUP                  = ANCILLARYINPUTGRANULE
+
+    OBJECT                 = ANCILLARYINPUTGRANULECONTAINER
+      CLASS                = "1"
+
+      OBJECT                 = ANCILLARYINPUTPOINTER
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = "MOD021KM.A1997224.1917.002.1999097225717.hdf"
+      END_OBJECT             = ANCILLARYINPUTPOINTER
+
+      OBJECT                 = ANCILLARYINPUTTYPE
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = "Geolocation"
+      END_OBJECT             = ANCILLARYINPUTTYPE
+
+    END_OBJECT             = ANCILLARYINPUTGRANULECONTAINER
+
+  END_GROUP              = ANCILLARYINPUTGRANULE
+
+  GROUP                  = ASSOCIATEDPLATFORMINSTRUMENTSENSOR
+
+    OBJECT                 = ASSOCIATEDPLATFORMINSTRUMENTSENSORCONTAINER
+      CLASS                = "1"
+
+      OBJECT                 = ASSOCIATEDSENSORSHORTNAME
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = "CCD"
+      END_OBJECT             = ASSOCIATEDSENSORSHORTNAME
+
+      OBJECT                 = ASSOCIATEDPLATFORMSHORTNAME
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = "AM-1"
+      END_OBJECT             = ASSOCIATEDPLATFORMSHORTNAME
+
+      OBJECT                 = ASSOCIATEDINSTRUMENTSHORTNAME
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = "MODIS"
+      END_OBJECT             = ASSOCIATEDINSTRUMENTSHORTNAME
+
+    END_OBJECT             = ASSOCIATEDPLATFORMINSTRUMENTSENSORCONTAINER
+
+  END_GROUP              = ASSOCIATEDPLATFORMINSTRUMENTSENSOR
+
+  GROUP                  = ADDITIONALATTRIBUTES
+
+    OBJECT                 = ADDITIONALATTRIBUTESCONTAINER
+      CLASS                = "1"
+
+      OBJECT                 = ADDITIONALATTRIBUTENAME
+        CLASS                = "1"
+        NUM_VAL              = 1
+        VALUE                = "QAPERCENTGOODQUALITY"
+      END_OBJECT             = ADDITIONALATTRIBUTENAME
+
+      GROUP                  = INFORMATIONCONTENT
+        CLASS                = "1"
+
+        OBJECT                 = PARAMETERVALUE
+          NUM_VAL              = 1
+          CLASS                = "1"
+          VALUE                = "00.0"
+        END_OBJECT             = PARAMETERVALUE
+
+      END_GROUP              = INFORMATIONCONTENT
+
+    END_OBJECT             = ADDITIONALATTRIBUTESCONTAINER
+
+    OBJECT                 = ADDITIONALATTRIBUTESCONTAINER
+      CLASS                = "2"
+
+      OBJECT                 = ADDITIONALATTRIBUTENAME
+        CLASS                = "2"
+        NUM_VAL              = 1
+        VALUE                = "QAPERCENTOTHERQUALITY"
+      END_OBJECT             = ADDITIONALATTRIBUTENAME
+
+      GROUP                  = INFORMATIONCONTENT
+        CLASS                = "2"
+
+        OBJECT                 = PARAMETERVALUE
+          NUM_VAL              = 1
+          CLASS                = "2"
+          VALUE                = "00.0"
+        END_OBJECT             = PARAMETERVALUE
+
+      END_GROUP              = INFORMATIONCONTENT
+
+    END_OBJECT             = ADDITIONALATTRIBUTESCONTAINER
+
+    OBJECT                 = ADDITIONALATTRIBUTESCONTAINER
+      CLASS                = "3"
+
+      OBJECT                 = ADDITIONALATTRIBUTENAME
+        CLASS                = "3"
+        NUM_VAL              = 1
+        VALUE                = "QAPERCENTNOTPRODUCEDCLOUD"
+      END_OBJECT             = ADDITIONALATTRIBUTENAME
+
+      GROUP                  = INFORMATIONCONTENT
+        CLASS                = "3"
+
+        OBJECT                 = PARAMETERVALUE
+          NUM_VAL              = 1
+          CLASS                = "3"
+          VALUE                = "53.2"
+        END_OBJECT             = PARAMETERVALUE
+
+      END_GROUP              = INFORMATIONCONTENT
+
+    END_OBJECT             = ADDITIONALATTRIBUTESCONTAINER
+
+    OBJECT                 = ADDITIONALATTRIBUTESCONTAINER
+      CLASS                = "4"
+
+      OBJECT                 = ADDITIONALATTRIBUTENAME
+        CLASS                = "4"
+        NUM_VAL              = 1
+        VALUE                = "QAPERCENTNOTPRODUCEDOTHER"
+      END_OBJECT             = ADDITIONALATTRIBUTENAME
+
+      GROUP                  = INFORMATIONCONTENT
+        CLASS                = "4"
+
+        OBJECT                 = PARAMETERVALUE
+          NUM_VAL              = 1
+          CLASS                = "4"
+          VALUE                = "46.8"
+        END_OBJECT             = PARAMETERVALUE
+
+      END_GROUP              = INFORMATIONCONTENT
+
+    END_OBJECT             = ADDITIONALATTRIBUTESCONTAINER
+
+    OBJECT                 = ADDITIONALATTRIBUTESCONTAINER
+      CLASS                = "5"
+
+      OBJECT                 = ADDITIONALATTRIBUTENAME
+        CLASS                = "5"
+        NUM_VAL              = 1
+        VALUE                = "GRANULENUMBER"
+      END_OBJECT             = ADDITIONALATTRIBUTENAME
+
+      GROUP                  = INFORMATIONCONTENT
+        CLASS                = "5"
+
+        OBJECT                 = PARAMETERVALUE
+          NUM_VAL              = 1
+          CLASS                = "5"
+          VALUE                = "233"
+        END_OBJECT             = PARAMETERVALUE
+
+      END_GROUP              = INFORMATIONCONTENT
+
+    END_OBJECT             = ADDITIONALATTRIBUTESCONTAINER
+
+  END_GROUP              = ADDITIONALATTRIBUTES
+
+END_GROUP              = INVENTORYMETADATA
+
+END

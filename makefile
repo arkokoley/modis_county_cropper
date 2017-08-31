@@ -14,22 +14,30 @@ install:
 	@echo "source <path_to_conda>/activate gdalenv"
 
 download: tiles.txt
-	mkdir $(product)
+	mkdir -p $(product)
 	modis_download.py -P $(pass) -U $(user) -s MOLT -p $(product) -t `cat tiles.txt` -f $(from) -e $(end) $(product)/
 
-stitch: listfile$(product).txt mrt/*
+stitch: $(product)/listfile$(product).txt mrt/*
 	@echo "stitching hdf tiles"
-	modis_mosaic.py -s "1 1 1 1 1 1 1" -m mrt/ -v -o mosaic listfile$(product).txt
-	@echo "generating GTiff files for all layers"
-	modis_convert.py -s "( 1 1 1 1 1 1 1 )" -o mosaic -e 4326 mosaic.hdf
+	cd $(product); \
+	ls *.hdf | cut -f 2 -d. | cut -d. -f1 | uniq | sort | while read line; do \
+		ls *.hdf *.xml | grep "$$line" > listfile."$$line".$(product).txt; \
+		modis_mosaic.py -s "1 1 1 1 1 1 1" -m ../mrt/ -v -o mosaic."$$line" listfile."$$line".$(product).txt; \
+		echo "generating GTiff files for all layers"; \
+		modis_convert.py -s "( 1 1 1 1 1 1 1 )" -o mosaic."$$line" -e 4326 mosaic."$$line".hdf; \
+	done; \
+	cd .. ;
 
 crop: listCounty.txt shape.py
 	@echo "cropping by county"
+	mkdir -p data
 	@cat listCounty.txt | while read line; do \
 		echo "$$line"; \
 		python shape.py "$$line"; \
-		for i in `ls *.tif | cut -d'.' -f1`; do \
-			basename "$${i}" tif | awk -F"mosaic" '{print $$NF}'; \
-			gdalwarp -cutline "$$line"/"$$line".shp -crop_to_cutline "$${i}".tif "$$line"/"$$line"`basename "$${i}" tif | awk -F"mosaic" '{print $$NF}'`.tif; \
+		cd $(product); \
+		for i in `ls *.tif | cut -d'.' -f2`; do \
+			mkdir -p ../data/`basename "$${i}" tif | cut -d'_' -f1`; \
+			gdalwarp -cutline ../"$$line"/"$$line".shp -crop_to_cutline mosaic."$${i}".tif ../data/`basename "$${i}" tif | cut -d'_' -f1`/"$$line".`basename "$${i}" tif | cut -d'_' -f2-`.tif; \
 		done; \
+		cd .. ; \
 	done;

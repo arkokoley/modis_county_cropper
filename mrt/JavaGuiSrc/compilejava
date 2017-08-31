@@ -1,0 +1,71 @@
+#!/bin/sh
+
+# *******************************************************
+# * Makefile for the Java GUI source code               *
+# * Gail Schmidt, 12/24/2001                            *
+# *******************************************************
+
+# compile the .java files in the image directory
+cd edu/sdsmt/modis/image
+echo "Compiling source files in `pwd`..."
+javac -sourcepath ../../../.. -source 1.5 -target 1.5 *.java
+
+# compile the .java files in the resample directory
+cd ../../../../edu/sdsmt/modis/resample
+echo "Compiling source files in `pwd`..."
+javac -sourcepath ../../../.. -source 1.5 -target 1.5 *.java
+
+# compile the .java files in the modis directory
+cd ../../../../edu/sdsmt/modis
+echo "Compiling source files in `pwd`..."
+javac -sourcepath ../../.. -source 1.5 -target 1.5 *.java
+
+# create the .jar file
+cd ../../..
+echo "Creating ModisTool.jar in `pwd`..."
+jar -cvmf manifest.txt ModisTool.jar edu/sdsmt/modis/resample/*.class edu/sdsmt/modis/image/*.class edu/sdsmt/modis/*.class
+
+echo "Creating java index..."
+jar -i ModisTool.jar
+
+# move the .jar file to the ../bin directory
+echo "Moving ModisTool.jar to the ../bin directory..."
+mv ModisTool.jar ../bin
+
+# remove the .class files
+echo "Clean up class files..."
+rm edu/sdsmt/modis/resample/*.class
+rm edu/sdsmt/modis/image/*.class
+rm edu/sdsmt/modis/*.class
+
+# *******************************************************
+# * Makefile for the MRTBatch source code               *
+# *******************************************************
+
+cd MRTBatch
+ 
+# compile the .java files in the mrtswath directory
+cd gov/lpdaac/mrtbatch
+echo "Compiling source files in `pwd`..."
+javac -sourcepath ../../.. -source 1.5 -target 1.5 *.java
+
+# create the .jar file
+cd ../../..
+echo "Creating MRTBatch.jar in `pwd`..."
+jar -cvmf manifest.txt MRTBatch.jar gov/lpdaac/mrtbatch/*.class
+
+echo "Creating java index..."
+jar -i MRTBatch.jar
+
+# move the .jar file to the ../bin directory
+echo "Moving MRTBatch.jar to the ../../bin directory..."
+mv MRTBatch.jar ../../bin
+
+# remove the .class files
+echo "Clean up class files..."
+rm gov/lpdaac/mrtbatch/*.class
+
+cd ..
+
+echo "Done."
+

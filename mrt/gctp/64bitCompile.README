@@ -1,0 +1,17 @@
+
+The purpose of this document is to state what was done to the modules in
+the gctp directory during the ports to 64-bit systems.
+
+1) br_gctp.c was removed from the build, but not the directory.
+
+   The reasons for the removal are as follows:
+
+   a) The translation unit defines a single function call _gctp() that is
+      currently not called by any of the applications in the MRT or from
+      the gctp library itself.
+   b) It is passing in two integer values that are then cast to pointers.
+      On LP64 machines, an int is 32-bits and a pointer is 64-bits.  Before
+      this module can be placed back into the build, this issue needs to
+      be addressed.
+
+

@@ -1,0 +1,925 @@
+Moderate Resolution Imaging Spectroradiometer (MODIS) Reprojection Tool
+NASA Land Processes Distributed Active Archive Center (LP DAAC)
+USGS Earth Resources Observation and Science (EROS) Center
+Sioux Falls, South Dakota, U.S.A.
+
+----------------------------------
+MRT Release Notes
+     MRT Readme
+     Building the Source Code
+     Platform Specific Info
+     GNUMakefile
+     Various Environment Variables
+     MRT History
+----------------------------------
+
+MRT README
+------------------------------
+The MRT directory structure stores each application in a separate directory,
+with a separate Makefile for each application.  Shared modules reside in the
+shared_src directory, which also contains any include files that are specific
+to the shared modules.  The COTS/GOTS libraries (szip, hdf, hdfeos, tiff,
+geotiff, jpeg, zlib) reside in the libs directory and associated includes
+reside in the include directory.  (No source code will be packaged with the
+MRT for the COTS/GOTS libraries.  Only the libraries will be provided.  The
+user can freely obtain the source code for all these libraries via the Web.)
+The local gctp and geolib libraries and header files reside in the gctp and
+geolib directories.
+
+In general, here's the MRT directory structure:
+
+application directories - Contain source and include files that are specific
+  to that particular application (append_meta, dumpmeta, hdf2rb, hdflist,
+  mrtmosaic, resample, sdslist, update_tile_meta.)
+shared_src - Contains modules and include files shared by many of the
+  applications.
+gctp - Contains GCTP source code, include files, and built libraries.
+geolib - Contains Geolib source code, include files, and built libraries.
+lib - Contains the external COTS/GOTS libraries used by the project (hdf4,
+  hdfeos2, tiff, geotiff, zlib, szip, jpeg).
+include - Contains the header files for the external COTS/GOTS libraries.
+bin - Contains the executables for each MRT application.  Also contains the
+  .jar and icon files for the GUI, along with the world.jpg image.  In addition,
+  some simple test data resides in the directory.
+data - Contains the datum and spheroid text files that will be used by GCTP. 
+doc - Contains the User's Manual and Release Notes for the project.
+JavaGuiSrc - Contains the Java source code for the GUI.
+
+Building the source code
+------------------------
+The MRT is packaged with pre-compiled binaries for each platform.  If the
+user desires to compile the source code on their local machine, the source
+should be built in the following order.
+
+1. Obtain (or build) libraries for jpeg, szip, zlib, tiff, geotiff, hdf,
+   and hdfeos.  These are provided for our supported platforms in the lib
+   directory.
+2. Build the gctp library.
+3. Build the geolib library.
+4. Build the MRT library in shared_src.
+5. Build the applications: append_meta, dumpmeta, hdflist, sdslist,
+     update_tile_meta, hdf2rb, mrtmosaic, resample.
+
+The gctp, geolib, and MRT libraries and include files should remain in
+their particular directory.  Thus 'make install' will do nothing.  The
+executables for each of the applications need to be moved to the bin
+directory, and 'make install' will handle that appropriately.
+
+Platform specific info
+----------------------
+We have dropped support for SGI/IRIX and SUN/SOLARIS, but one should still be
+able to compile the source.  It is suggested that one use the source contained
+in the Linux package.  The dependent libraries (hdf4, hdf-eos2, szlib, zlib,
+jpeg, tiff, and geotiff) need to be built prior to building the MRT package.
+The Makefiles may need to be adjusted to point to these headers and libraries
+and the CFLAGS and LDFLAGS may need to be changed for your platform.  GNU make
+and gcc were used to build our current packages, so if another make utility or
+compiler is used, additional changes may be required.
+
+The following are suggestions if built on the specified platform:
+
+SGI/IRIX    - These platforms commonly don't come with the GNU CC compiler,
+              so the CC definition in the Makefile may need to be changed to
+              cc instead of gcc.  If the compiler does not support the -s
+              option, then compile without -s.  After compiling, run
+              "strip <executable>".
+SUN/SOLARIS - An additional library must be linked in before the math library.
+              Thus "-lm -s" needs to be "-lnsl -lm -s".
+
+
+GNUMakefile
+-----------
+Using gmake (and make on systems where make and gmake are linked to each
+other) will automatically pick up the GNUMakefile.  This makefile is mainly
+for the EROS developers to be used during development.  It automatically
+detects the users platform and sets up the environment variables appropriately
+based on the users platform, specifically for pointing to the appropriate
+vendor libraries and include files as well as for certain build libraries.
+
+In order to build the software in the EROS environment using the GNUmakefiles,
+there must be a script or program called .mrt_config that resides in the home
+directory that returns either nothing, TS1, or TS1_DEBUG.  This script can be
+as simple as containing a single line such as 'echo $MRT_DEV_MODE'.  In this
+case you need to set your MRT_DEV_MODE environment variable to "TS1".  If you
+want your CFLAGS set for debug, then set the environment variable to
+"TS1_DEBUG".  As an alternative, if you do not want to use the MRT_DEV_MODE
+environment variable (which is used for other things as well), then you could
+use the line 'echo "TS1"' in the ~/.mrt_config script.  Make sure the
+~/.mrt_config script is executable.
+
+Various Environment Variables
+-----------------------------
+
+Used for internal development.
+
+MRT_DEV_HOME         Points to the top level MRT development directory.
+MRT_DEV_MODE         Uses GNU make to compile debug or not and whether for OPS
+                     or TS1.  The difference is that in TS1 mode, additional
+                     programs (e.g. fcgtiff, revendian, gtiff_composite) are
+                     also compiled. Valid values are TS1, DEBUG, or TS1_DEBUG.
+MRT_LIB_INSTALL      Points to the top level "installed" third party directory
+                     where the headers, libraries, man pages, executables, etc.
+                     reside.  Used when running the MRT_config scripts.
+MRT_DEV_INSTALL_HOME Points to the top level MRT_Install directory.
+
+
+History
+-------
+
+Version 4.1 (March 2011)
+------------------------
+1. Windows version was compiled with Visual Studio Express 2008.  It no
+   longer depends on Cygwin.
+
+2. Support for Windows 85/98 was dropped.
+
+3. Support for Solaris was dropped.
+
+4. MRT can now be installed into and work with input and output data
+   contained in directories with spaces.
+
+5. Due to conflicts with the MRTDATADIR environment variable with MRTSwath
+   and the HEG tool, MRT now uses MRT_DATA_DIR as the default.  It will
+   use MRTDATADIR if MRT_DATA_DIR is not defined, however.
+
+6. The included example test.prm and test1.prm parameter files in the
+   MRT bin directory now work.
+
+7. Several buffer overruns were fixed which may have caused the MRT to
+   core or create a segmentation fault.  These types of errors affected
+   the inputing and/or outputing of FLOAT32 data and in error reporting.
+
+8. Pixel values are now rounded when writing integer output images.
+
+
+9. The mrtmosaic application will not create an HDF file greater than 2G
+   due to a file limitation in the HDF v4 file format.  An error message
+   is displayed instead.
+
+10. Name of install scripts was changed to "mrt_install" to avoid conflicts 
+    with other install software.
+
+11. A typo in the GUI parameters dialog for Transverse Mercator was corrected 
+    to read "OriginLat" instead of "OrginLat."
+
+12. The automated batch processing service formerly distributed separately 
+    from the MRT software (MRTBatch.jar) has been incorporated with the MRT
+    package downloads.
+
+
+Version 4.0 (September 2007)
+----------------------------
+1. Restructured the source code so that each application within the MRT
+   resides in its own separate directory.  The shared routines reside in
+   the shared_src directory.  And, as was the case before, the vendor
+   libraries and include files reside in the lib and include directories.
+   The GCTP and Geolib source code and libraries reside in their own
+   directory as well.
+
+2. Added support for Mac OS X and 64-bit Linux platforms.
+
+3. Fixed a bug in the mrtmosaic application which incorrectly dumped out a
+   "File does not exist" error message when loading M[O|Y]D09GA tiles.
+
+4. A bug in the Geolib source code was causing resampling errors on Linux
+   systems when using the NAD27 datum.  This bug has been fixed.
+
+5. When resampling using the Nearest Neighbor resampling option, the MRT
+   was incorrectly rounding when determining the nearest neighbor pixel.
+   This bug has been fixed.  Thanks to Maosheng Zhao with the Numerical
+   Terradynamic Simulation Group at the University of Montana for pointing
+   this out.
+
+6. When using raw binary as the output format, the MRT previously used
+   big endian byte-ordering regardless of the platform.  This has been
+   modified due to user requests.  The MRT now writes raw binary products
+   using the native byte ordering based on the users machine.  A new field
+   has been added to the raw binary header to specify the byte order of
+   the product.  This field is now required for reading raw binary headers,
+   since the MRT needs to know the byte ordering of the input product.
+
+7. The MRT will now be provided to the user in one gzip file.  After
+   downloading and unzipping that file, the user can install the software
+   using the provided installation scripts.  One single download will make
+   downloading easier for the user, especially with Windows platforms.
+
+8. When specifying output projection x/y for spatial subsetting, the LR
+   corner specified by the user is now modified to be an integral number
+   of lines and samples, if necessary.
+
+9. When specifying spatial subsetting using input lat/long coordinates, the
+   MRT now squares the spatial subsetting off in input lat/long space.  Thus
+   the UR and LL input lat/long corners are determined from the UL and LR
+   input lat/long corners.  These corners are then converted to output
+   projection coordinates.  Previously the MRT converted the UL and LR input
+   lat/long coordinates to input projection coordinates.  The UL and LR
+   input projection coordinates were then used to determine the UR and LL
+   corner.  Then the boundary of the subset in input projection space was
+   walked and each point converted to output projection space.  This process
+   still occurs when processing the entire granule and/or when specifying
+   input line/sample for subsetting, but not when speciying input lat/long
+   coordinates for subsetting.
+
+
+Version 3.3a (January 2006)
+---------------------------
+1. An issue arose with mosaicking tiles that wrapped around the international
+   dateline.  The MRT would process the data, but not the correct subset of
+   data.  Often the output product contained all background fill data.
+
+2. hdf2rb was reading the datum value from the HDF file, but then setting it
+   to No Datum during processing.  The datum value is now output as read from
+   the HDF file.
+
+Version 3.3 (December 2005)
+---------------------------
+1. Modified the resampler and mrtmosaic to verify that the values specified
+   by the -s (spectral subset) switch are only 0s and 1s.  Also, fixed the
+   use of the -s switch which was not being parsed correctly with the previous
+   version.
+
+2. When mosaicking files with a multitude of bands/SDSs, the resample
+   executable would core dump. The problem has been tracked to a buffer
+   that was not large enough to handle the huge list of input bands. The
+   size of the buffer has been increased and the bug fixed.
+
+3. The HDF-EOS documentation specifies that angular coordinates in the
+   projection parameters are specified as DMS. The MRT expects the values
+   to be input as decimal degrees for raw binary, so the DMS values are 
+   converted to decimal degrees after they are read from the HDF file.
+   This has not been an issue to this point for Sinusoidal or Integerized
+   Sinusoidal data, since the only angular projection parameter for these
+   two data sets contains a value of 0.0. Thanks to Terry Haran from NSIDC
+   for pointing out this problem and providing the appropriate changes.
+
+4. The HDF-EOS documentation specifies that angular coordinates in the
+   projection parameters are specified as DMS. The MRT stores the projection
+   parameter values internally as decimal degrees, therefore they need to be
+   converted to DMS before writing to the output HDF-EOS file. The values
+   will still be written as decimal degrees to the output raw binary files.
+   Thanks to Terry Haran from NSIDC for pointing out this problem and
+   providing the appropriate changes.
+
+5. Modified the output for unsigned 32-bit GeoTiff values. A break in
+   the switch statement was left out and caused the unsigned 32-bit GeoTiff
+   tags to be specified as float 32-bit values.
+
+6. The previous release specified that the Geotiff files would have the UL
+   corner refer to the center of the UL corner pixel. An incorrect Geotiff
+   tag was used in this modification. RasterPixelIsArea actually refers to
+   the UL corner of the pixel instead of the center of the pixel. This has
+   been changed and we are now using RasterPixelIsPoint so that the center
+   of the pixel is specified appropriately.
+
+7. Updated the resampling routines to resample from the center of the pixel
+   rather than from the UL extent of the pixel. The weights in the resampling
+   kernal were set up based on using the center of the pixel, so the calling
+   routines needed to be changed to send in the center of the pixel as the
+   location to be resampled. This also required that the routine to calculate
+   the ISIN shift be modified to work from the center of the pixel instead of
+   the UL extent so that the shift could be applied correctly in the
+   resampling algorithm.
+
+8. Created a routine called update_tile_meta to get the user-specified
+   horizontal and vertical tile information from the command-line and then
+   write it to the CoreMetadata.0 structure in the specified HDF file. This
+   was requested for use with some of the LDOPE applications.
+
+9. Created a more efficient tool to convert from HDF to raw binary products.
+   hdf2rb is very similar to the MRT, however it does not rely on the internal
+   use of lat/longs. This allows bounding tiles to be processed with better
+   results. This tool does not do any resampling. It is only meant to take
+   the input product, spatially and spectrally subset it, then write it out
+   as a raw binary product.
+
+10. Tightened up the boundary on the output products to get a more true
+    minimum-bounding product for input line/sample and input lat/long
+    spatial subsetting.
+
+
+Version 3.2a (July 2004)
+------------------------
+1. Modified the Geotiff output to correctly handle signed vs. unsigned
+   integers. Previous versions tagged unsigned values in the GeoTiff file
+   as signed values.
+
+2. Previous versions of the MRTSwath output the GeoTiff UL corner point as
+   the outer extent of the UL corner. This has been modified to represent
+   the center of the pixel of the UL corner. In addition, the
+   GTRasterTypeGeoKey GeoTiff tag has been modified to RasterPixelisArea to
+   correctly represent that the corner point is the center of the pixel.
+   The corner point representations for HDF-EOS and raw binary will remain
+   the outer extent of the pixels.
+
+
+Version 3.2 (April 2004)
+------------------------
+1. Modified the Windows install script to work with Windows XP systems.
+
+2. Modified the SGI version to be compiled using the SGI CC compiler rather
+   than the gcc compiler. Users on IRIX64 were not able to run the mrtmosaic
+   executable successfully. The software is built using -n32 on an IRIX
+   system, which should be compatible for running on IRIX64. The change in
+   compilers has fixed the problem at this point. It did not appear that
+   the resample executable had this same problem with the IRIX64 environment.
+
+3. Cleaned up variables not needed in the software that were pointed out
+   by CC -fullwarn.
+
+4. Calls to WriteRow were not being checked for errors. This has been fixed.
+   If WriteRow returns an error, then an error message is printed and
+   processing is stopped.
+
+5. The read_parameter routine read (s and )s and replaced them with " ( "
+   and " ) " to follow the MRT parameter file standards. This replacement
+   with spaces caused problems for users that had (s and )s in their
+   directory name. This has been fixed.
+
+6. The mosaic tool and MRT use the SDS name along with the name of the 3rd
+   and 4th dimensions when processing 3D and 4D data. The output products
+   are 2D, using SDS_name.3rd_dim_name.4th_dim_name as the output SDS name.
+   In some cases, the length of this SDS name was larger than allowed by HDF.
+   The processing didn't provide an error, but instead ultimately used the
+   same SDS name for each SDS to be processed (since the actual name was
+   truncated to the allowed SDS name length).
+
+7. Fixed a bug in the GUI for reloading parameter files for mosaicking
+   several tiles together. Previously, the GUI would load a parameter file
+   containing several input tiles. The mosaicking would be implemented
+   appropriately, however the resampler would issue an error that it couldn't
+   read the TmpHdr.hdr file.
+
+8. Created a utility to append bounding coordinates and horizontal/vertical
+   tile information to an HDF-EOS file that does not contain that information.
+   The MRT requires the BOUNDING COORDINATES to be present when processing
+   bounding tiles.  In addition, the HORIZONTAL TILE and VERTICAL TILE
+   parameters need to be available when mosaicking tiles together.  We have
+   found that the LDOPE tools do not output this information in many cases,
+   specifically in the cp_proj_parm utility.
+
+9. When reading the Struct, Core, and Archive metadata, the MRT would check
+   the status value returned by the HDF library to make sure the metadata
+   was found and read successfully.  We ran into a case where a file had
+   the ArchiveMetadata defined, but the attribute didn't contain any values.
+   This caused the MRT to core dump, since the MRT was at the very least
+   expecting that the END field would denote the end of the metadata.  The
+   MRT has been modified to also check if the attribute contains any data,
+   before trying to process the specified attribute.
+
+
+Version 3.1a (July 2003)
+------------------------
+1. A bug was fixed in Version 3.1 to fix the output number of lines and
+   samples. This introduced a bug in which the output number of lines and
+   samples was not accurately getting calculated to a whole line or sample.
+   Instead fractional lines and samples were being used. This bug has been
+   fixed.
+
+2. Added Equirectangular as another supported projection.
+
+
+Version 3.1 (March 2003)
+------------------------
+1. In Version 3.0a, for Windows platforms, the ViewMetadata option caused
+   the GUI to hang. This was due to informational messages being output by
+   dumpmeta that the Windows platforms could not handle in the GUI. This
+   has been fixed.
+
+2. Added Mercator as another supported projection.
+
+3. When mosaicking more than 15 tiles at one time, the MRT would exit with
+   an error message specifying that a certain .hdf file could not be opened.
+   This bug has been fixed. In addition, instead of opening all the input
+   HDF-EOS files at once and processing the data on a row-by-row basis, the
+   mosaic tool now opens only the HDF-EOS files from the current row being
+   processed.
+
+4. When reprojecting to Interrupted Goodes Homolosine, the resampler output
+   a message stating that "projection 24 was unknown". This occurred in
+   the section of the resampler that prints out the projection information.
+   This bug has been fixed.
+
+5. When reprojecting bounding tiles to Interrupted Goodes Homolosine, the
+   resampler exited with an error while converting the lat/long coordinates
+   to output projection coordinates. This was due to the fact that IGH
+   contains breaks in the projection. Many of the ISIN bounding tiles fell
+   into the IGH interrupted areas. The GCTP software returns an IN_BREAK
+   value when the data point falls within the IGH break areas. The resampler
+   software has been modified to look for the IN_BREAK return value. If that
+   value is returned, the particular pixel is tagged as a background fill
+   pixel and processing continues.
+
+6. Previous versions of the MRT had prevented the user from processing data
+   that crossed the International Dateline. A bug in the international dateline
+   software prevented users from processing valid data that covered the entire
+   globe which did not cross the international dateline. This bug has been
+   fixed.
+
+
+Version 3.0a (December 2002)
+----------------------------
+1. Version 3.0 prevented datum conversions for sphere-based projections.
+   The MRT incorrectly classified Geographic as a sphere-based projection
+   when instead datum conversions should be allowed for the Geographic
+   projection. This has been fixed.
+
+2. Version 3.0 added a check to the subsetting values to verify that an
+   integral number of lines and samples were being processed. If the number
+   of lines or samples was not an integer, then the LR corner was readjusted
+   such that the subset was an integral number of lines and samples. Due to
+   computer roundoff, the implementation added an extra line and sample in
+   almost all cases. This has been fixed.
+
+
+Version 3.0 (December 2002)
+---------------------------
+1. Version 2.3 introduced a bug for line/sample subsetting when using the
+   No_Datum option. This has been fixed.
+
+2. Previous versions of the MRT did not output an exact number of lines
+   and samples. The actual corner points were not an exact number of lines
+   and samples (unless the user was doing a format conversion), even though
+   the MRT output reported an integer value for the lines and samples.
+   After the MRT determined the minimum bounding rectangle in output space,
+   that rectangle was not expanded to be an exact number of lines and
+   samples. Instead it had a fractional number of lines and samples, depending
+   on the image. This has been fixed.
+
+3. Previous versions of the MRT output citation keys in GeoTiff for UTM
+   projections when not outputting to WGS84. The current version will support
+   other datums supported by GeoTiff for UTM. GeoTiff supports WGS84 and WGS72
+   for all UTM zones (1N - 60N and 1S - 60S). GeoTiff supports NAD27 for UTM
+   zones 3N to 22N. GeoTiff supports NAD83 for UTM zones 3N to 23N. Any other
+   combinations are output by the MRT to GeoTiff using citation keys.
+
+4. Previous versions of the MRT GUI read the .met file associated with the
+   HDF file when pressing ViewMetadata. A new executable now exists that
+   will allow the user to view the metadata associated with the HDF file
+   itself, which is different than viewing the .met file. The ViewMetadata
+   button will now use 'dumpmeta' to output a temporary metadata file for
+   the .hdf file and display it in the GUI. Thus the ViewMetadata file will
+   now display the metadata for the .hdf file itself, not the .met file
+   associated with the .hdf file. If the user wants to use this executable
+   on the command-line, simply type
+   'dumpmeta <input HDF file> <output metadata text file>'.
+
+5. A change in version 2.1 or 2.2 of the MRT broke the default GUI spatial
+   subsetting in some cases. If the spatial subsetting in the parameter file
+   was exactly the same as the input UL and LR corners (as is the case when
+   using the GUI and processing the entire image), then the output image
+   was getting cut off in some cases. If the UR corner was to the east of the
+   LR corner then the image was cut off at the LR corner, due to this bug
+   which has now been fixed.
+
+6. A change in version 2.2 did not allow the MRT to process input raw binary
+   ISIN files. This too has been fixed.
+
+7. When implementing Cubic Convolution on an area which was highly reflective
+   (i.e. cloud region) the MRT was overflowing the double buffer.  This has
+   been fixed.
+
+8. The MRT will now allow for mosaicking. When using the GUI, the user may
+   select several input filenames for processing. The View Mosaic option will
+   allow the user to view the tiles that were selected for processing. The
+   processing involves mosaicking the tiles selected (only for the specified
+   bands) and then resampling the mosaic.
+   A command-line version of the mosaic tool also exists. The user can mosaic
+   several tiles together by using mrtmosaic on the command-line. The names
+   of the tiles must be specified in a parameter file. In addition, the user
+   may select which bands to be processed in the mosaic by using the -s switch.
+
+9. The changes made to the MRT GUI for mosaicking require the user to
+   use the later versions of Java 1.3 or Java 1.4. Java 1.2 will no longer
+   support the functions in the MRT.
+
+10. Added support for Albers Equal Area (AEA or ALBERS_EQUAL_AREA).
+
+11. When outputting sphere values to GeoTiff using the GeogSemiMajorAxisGeoKey
+    and GeogSemiMinorAxisGeoKey, some software packages require both the
+    GeogSemiMajorAxisGeoKey and GeogSemiMinorAxisGeoKey values to be the
+    radius of the sphere. Previously the MRT set the value of the
+    GeogSemiMinorAxisGeoKey to 0.0. This has been changed and the
+    GeogSemiMinorAxisGeoKey value is now set to the radius of the sphere.
+   
+12. ISIN data has a shift between lines on a per pixel basis. This shift is
+    linear per line, thus the slope of the shift can be calculated by
+    determining the shift for the first pixel and the shift for the last
+    pixel in a line and dividing by the number of pixels in the line. The
+    MRT resampling processes account for this pixel shift (as of Release 3.0)
+    in the Nearest Neighbor, Bilinear, and Cubic Convolution resampling
+    processes. The shifts for SDSs of the same resolution are the same. The
+    shifts will be recalculated when a new resolution is encountered in the
+    image. Shift statistics are output for the user. It is important to note
+    that the shift handling slows down the resampling process, so the user
+    will see a slow-down in the overall MRT processing times.
+
+13. The previous versions of the MRT were not able to handle sphere radius
+    values other than 6370997.0 (radius of sphere 19) for sphere-based
+    projections while implementing datum conversions. This was hard-coded
+    in GCTP. Version 3.0 of the MRT will support 6371007.181 as a sphere
+    radius value in the MODIS Sinusoidal data.
+
+14. The MRT will no longer allow datum conversions when reprojecting to
+    sphere-based projections. In addition datums are no longer output for
+    sphere-based projections. The MRT used to output WGS84, by default,
+    for all projections. However, technically sphere-based projections do
+    not have a datum. Thus, now it will be up to the user to know the origin
+    of their data. For MODIS users, the original MODIS data is "referenced
+    to" the WGS84 datum.
+
+15. The HDF-EOS documentation specifies that when dealing with the Geographic
+    projection, the upper left and lower right corner points will be output
+    in DMS rather than decimal degrees. Version 3.0 of the MRT outputs
+    the upper left and lower right corners for the Geographic projection
+    to HDF-EOS data files as DMS. In addition, the MRT also requires the
+    input HDF-EOS Geographic corner points to be in DMS. All other projections
+    are still expected to be in meters. When dealing with Geographic and
+    raw binary data, the MRT still outputs the corner points as decimal
+    degrees and requires decimal degrees on input for raw binary as well.
+
+16. Previous versions of the MRT used a minimum-bounding rectangular box
+    to determine the spatial subsetting for format conversions. When format
+    converting the entire image, it only makes sense to output the image
+    exactly as it is and not determine a minimum-bounding rectangle. When
+    working in the Western hemisphere, the minimum-bounding rectangle (in
+    most cases) produced an output exactly as the input. However, for some
+    cases in the Eastern hemisphere, the minimum-bounding rectangle produces
+    an output product that contains extra fill on the left and right of the
+    image. This issue has been resolved in version 3.0.
+
+17. Users may now set default input, output, and parameter file directories.
+    If specified, then the MRT will use these directory settings as the
+    default for the specific directory. If not specified, then the MRT will
+    use the local directory as the default (which is currently the case).
+    Windows users will need to click on the desired directory, then also type
+    the final directory name in the text box. Unix and Linux users should be
+    able to simply click on the desired directory names. These can be set
+    using the 'Settings' option on the MRT GUI toolbar.
+
+
+Version 2.3 (May 20, 2002)
+--------------------------
+1. The MRT was not correctly defaulting to reference the WGS84 datum for
+   raw binary data, if an input datum was not specified in the raw binary
+   header. This has been fixed.
+
+2. The fix in version 2.2 to handle crossing the International Dateline
+   introduced a bug if the data straddles the 0 degrees longitude line.
+   This has been fixed.
+
+3. A bug has existed in previous versions of the MRT which crops the output
+   image (in some cases) when processing with the GUI. The GUI creates a
+   temporary parameter file using the original UL and LR lat/long coordinates
+   as the subsetting coordinates. The resampler software then uses the corner
+   coordinates from the parameter file to determine the minimum bounding
+   rectangular box for output. In many cases, when dealing with the coordinates
+   output by the GUI to process the entire image, the bounding rectangular box
+   crops the image. Instead of simply using the UL and LR corners (as the
+   resampler does when spatial subsetting coordinates are specified), the
+   resampler should use the UL, UR, LL, and LR to find the minimum bounding
+   rectangular coordinates. In version 3.0 of the MRT, the resampler checks
+   the spatial subset UL and LR corners and compares them with the original
+   corners in the image. If the spatial subset and the original corners are
+   within a small epsilon of each other, then the MRT assumes that the user
+   wants to process the entire image and not specifically use the UL and LR
+   corners as reported by the GUI. This fix should prevent the cropping seen
+   when processing an entire image in the GUI.
+
+   For many tiles (Example 1) this bug will not be a problem, however for
+   some tiles (Example 2) this bug is a serious problem.
+
+   UL---------UR                                     UL---------UR
+    -          -                                   -          -
+     -          -                                -          -
+      -          -                             -          -
+       -          -                          -          -
+        -          -                       -          -
+        LL---------LR                   LL---------LR
+
+        * Example 1 *                   * Example 2 *
+
+4. Previous versions of the MRT have actually been dealing with Geographic
+   units in degrees, not arc-seconds as the User's Guide and the GUI had
+   specified. The User's Guide and GUI have been updated to note that the
+   units are in degrees.
+
+5. The Geotiff output from the MRT still had a couple of tag issues that
+   needed to be fixed so that the output Geotiff data followed the Geotiff
+   standard. Among these issues were that only the UL corner point should be
+   output to the Geotiff tiepoint tag, not all four corner points. Another
+   issue was that the Geographic output was being tagged as both Geographic
+   and user-defined. The user-defined tag was removed.
+
+6. Previous versions of the MRT would not allow the user to enter a pixel
+   size of 0.xxxx into the GUI. The GUI would allow .xxxx, however.
+   Fractional pixel sizes less than one are common for outputting to
+   Geographic, since the units are in degrees (used to be arc-seconds).
+   This error occurred when pressing the Run, the ConvertFormat, or the
+   SaveParameters buttons. This bug has been fixed.
+
+7. Many of the MRT users have noted how the status box in the GUI takes
+   "total" control of the system. In previous versions of the MRT, if you
+   tried to close, minimize, or move the status box to the background, the
+   status box would take focus again. Thus the user could not work on
+   anything else because the status box would always steal the focus.
+   This has been fixed. The status box can now be minimized or placed in
+   the background (and it will remain there until the user brings it to
+   the foreground). The status box can also be closed. If the status box
+   is closed, it will remain closed but the resampler/format converter
+   will continue to run in the background. It will be up to the user to
+   determine when the process has completed ... by viewing the resample.log
+   file and/or the output image files.
+
+8. Previous versions of the MRT did not correctly support unsigned 32-bit
+   or signed 32-bit data. This has been fixed.
+
+9. A temporary fix has been added to allow the user to use the NO DATUM
+   option to specify their own radius of the sphere. The user may now
+   specify the radius of the sphere in the projection parameters (first
+   parameter), however the user must select the NO DATUM option for this
+   user-specified radius to be used. Previous versions of the MRT
+   automatically used the radius of Sphere 19 as the radius of any sphere-
+   based projection, regardless of the value that the user specified.
+
+   If the user is not going to specify their own radius value and instead
+   use an output datum, then 0.0 must be used in the first two projection
+   parameters. This will allow the MRT to use the default value in GCTP.
+
+   If the user chooses to use the NO DATUM option for the output product,
+   the MRT will also require that the radius of the sphere (for the input
+   projection) is specified in the input projection parameter as well.
+   This is not a problem for the traditional MODIS ISIN HDF-EOS data, but
+   it may be a problem for other non-traditional data sets that the MRT
+   will support.
+
+10. Version 2.2 of the MRT would not allow the user to specify the latitude
+    and longitude of their UTM zone, if a datum had been specified. Thus
+    only the UTM zone number could be used with a datum. This has been
+    fixed and the user can now specify the first two projection parameters
+    instead of the UTM zone, even when specifying a datum.
+
+11. Previous versions of the MRT allowed the user to specify the radius of
+    the sphere or the semi-major and semi-minor values in the first two
+    projection parameters, along with specifying a datum. The MRT then
+    checked the first two projection parameters with default values for
+    that projection and datum in GCTP. If the first two projection
+    parameters did not agree with the defaults in GCTP (when also specifying
+    a datum), then the MRT would exit with an error. This has been a point
+    of confusion for many users, thus the MRT will no longer allow the
+    user to specify both the first two projection parameters (except for
+    UTM) and the output datum. If the user wants to specify their own
+    radius of the sphere or semi-major and semi-minor, then the NO_DATUM
+    option must be used.
+
+12. Previous versions of the MRT specified the Vgroup name of the output
+    HDF-EOS files to be the output filename plus the output pixel size.
+    If the input file is an HDF-EOS file, then the output HDF-EOS file
+    will now retain the Vgroup name of the input HDF-EOS file.  If the
+    input file is a raw binary file, then the Vgroup naming convention
+    uses the output filename plus the output pixel size.
+   
+
+Version 2.2 (February 15, 2002)
+-------------------------------
+1. A bug was introduced in Release 2.1 that added an extra line and sample
+   to the output product. This same bug also caused the pixel size to be
+   incorrect. This has been fixed.
+
+2. Previous versions of the MRT have not been able to process the bounding
+   ISIN tiles (tiles on the outer edge of the ISIN projection). Version 2.2
+   now has the capability to handle these tiles. In addition, an issue in
+   previous versions arose when a tile crossed the International Dateline.
+   Version 2.2 can now handle this as well.
+
+3. Users reported problems ingesting the GeoTiff files created by the MRT
+   into other GIS packages. The output GeoTiff files from the MRT now follow
+   the GeoTiff "standard" that is supported at the USGS EROS.  ENVI should
+   support the GeoTiff products output by the MRT, however we realize that
+   some other software packages still may not be able to ingest these GeoTiff
+   products.
+
+4. The format conversion option has been changed in Version 2.2 to output
+   exactly the input file. No minimum bounding rectangle is created around
+   the input data, like with the resampling option.
+
+5. We realize that some users want to be able to compare their output data
+   with data that may be referenced other datums than WGS84. Version 2.2 of
+   the MRT now supports datum conversions. A limited number of input/output
+   datums are supported (NAD27, NAD83, WGS66, WGS72, WGS84, NODATUM). The
+   NODATUM option allows the user to specify the semi-major and semi-minor
+   axes in the projection parameters. WGS84 is used by default. If you are
+   doing a datum conversion, expect the processing time to be 5-10 times
+   slower than simply reprojecting without a datum conversion. For our users
+   that use the GCTP and Geolib (datum conversion layer), a bug fix was made
+   in Geolib to support the specified datums.
+
+6. In many cases, the data output (especially in Geographic projections) by
+   the MRT was not able to be input back into the MRT. These problems have
+   been fixed.
+
+7. When outputting HDF-EOS files from input raw binary data, the output
+   HDF-EOS files did not contain all the grid data as when going from
+   HDF-EOS to HDF-EOS. The raw binary to HDF-EOS conversions now contain
+   the appropriate grid information for the output HDF-EOS file.
+
+8. A request was made by our users to be able to specify the spatial subset
+   in output projection coordinates. This request has been implemented in
+   Version 2.2. Spatial subsetting can now be input lat/long, input
+   line/sample, and output projection x/y.
+   *** This change will require a change to your existing parameter files.
+   If the SPATIAL_SUBSET_UL_CORNER or SPATIAL_SUBSET_LR_CORNER are specified
+   in your parameter files, you MUST specify the SPATIAL_SUBSET_TYPE to be
+   INPUT_LAT_LONG, INPUT_LINE_SAMPLE, or OUTPUT_PROJ_COORDS. Thus your
+   parameter files now need to have the SPATIAL_SUBSET_TYPE parameter in
+   order for the MRT to process your spatial subset corners properly. ***
+
+9. Previous versions of the MRT have not been able to correctly subset an
+   image when line/sample spatial subsetting was specified and the output
+   projection type was geographic. This has been fixed.
+
+10. Previous versions of the MRT have not properly processed 3-dimensional
+    data products where the 3rd dimension was listed before the XDim and
+    YDim dimensions (i.e. "Num_QC_Words", "YDim", "XDim" in the MOD12Q1 data
+    products). This problem has been fixed and the MRT can properly handle
+    3-dimensional data products with the dimensions listed in any order.
+    The 4-dimensional data products were not affected by this bug.
+
+11. Information on the different resampling types (NN, CC, and BI) has been
+    added in the User's Guide. This information is to help the MRT users
+    to understand the differences between these options. In addition,
+    information on the ISIN bounding tiles and datum conversions has also
+    been added in the User's Guide.
+
+
+Version 2.1 (August 20, 2001)
+-----------------------------
+1. A bug was introduced in Release 2.0 that broke the use of many
+   command-line parameters. This has been fixed.
+
+2. The GCTP software that was received from the USGS EROS used the radius of
+   Sphere 19 (which is 6370997.0) instead of the radius of the MODIS sphere
+   (which is 6371007.181). This bug has been fixed in the MRT GCTP software.
+   This bug caused the output coordinates to be off by less than a pixel.
+
+3. Bi-directional support has been added to the MRT. All output projections
+   are now supported as input projections.
+
+4. Format conversion is now available. This allows the input data to be output
+   to a different data format without going through the resampling process. The
+   user can specify spatial and spectral subsetting, along with the output data
+   format.
+
+5. The bounding tiles in the ISIN projection have at least one corner point that
+   does not map to a valid latitude/longitude. Currently the MRT will not
+   process these tiles due to the invalid latitude/longitude. We are working on
+   a fix to support these tiles.
+
+6. For the Windows users, a ModisTool icon has been created. See the User's
+   Guide for setting up a shortcut for the MRT.
+
+7. A bug existed in the GUI when saving and resaving parameter files. This bug
+   has been fixed.
+
+
+Version 2.0 (June 2001)
+-----------------------
+1. Transverse Mercator has been added to the list of output projections.
+
+2. The user is now allowed to choose from WGS84, GRS80, and CLARKE1866
+   for the UTM output projection. The default ellipsoid is WGS84, which has
+   been the ellipsoid used for all previous releases. Both the GUI and the
+   command-line resampler support the choice of ellipsoid. The ellipsoid
+   value can be specified under Edit Projection Parameters for the UTM
+   projections (along side the UTM Zone). The parameter file supports an
+   ELLIPSOID_CODE parameter for specifying the output ellipsoid for the
+   output UTM projection.
+
+3. Cosmetic changes have been made to the GUI, along with some minor bug
+   fixes. An Exit button has been added next to the Run button to allow for
+   easier exiting from the MRT. The Resampling Type automatically defaults
+   to Nearest Neighbor to match the command-line resampler. The View
+   Metadata box can be left up while running the MRT. Previously the user
+   had to close the View Metadata box before continuing in the MRT GUI.
+   Similarly, the Status dialog box that pops up after pressing Run can now
+   be minimized/maximized. Previously this box needed to remain in the
+   foreground.
+
+4. A bug was introduced in Version 1.2 that did not allow the user to do
+   spatial subsetting from the GUI. The user was allowed to change the
+   UL and LR corners in the GUI, however the entire image would be processed.
+   This has been fixed in Version 2.0.
+
+5. The View Metadata option in the GUI used to look for a metadata file of
+   the name <basename>.met. Now the View Metadata option will look for and
+   view the metadata for any file of the following names (in the listed order):
+      <basename>.hdf.met
+      <basename>_hdf.met
+      <basename>.met
+
+   For raw binary files, the following file formats will be supported by the
+   View Metadata option (mainly for consistency):
+      <basename>.hdr.met
+      <basename>_hdr.met
+      <basename>.met
+   
+6. Minor bug fixes have been made to the GeoTiff output format, which will
+   hopefully prevent the past problems of ingesting the GeoTiff files into
+   ENVI, ERDAS, IDL, and other such packages.
+
+7. MOD11A1 and MOD12A1 both have internal data errors that did not allow
+   them to be processed correctly by the MRT. The SphereCode is set to 1
+   in these files, instead of -1. The MRT has a work-around for this
+   SphereCode and will now process these data products. In addition, the
+   MOD11A1 data files would cause a core dump in the MRT. This has also
+   been fixed.
+
+8. The MRT will now support multigrid/multiresolution data (i.e. MOD09Q1).
+
+9. The MRT will now support 3D/4D data. Each 3D or 4D slice will be named
+   using the following format:
+   <SDSname>.<third dimension name>_#.<fourth dimension name>_#
+   where # is a 2-digit number representing the slice in that dimension
+   that was processed. This naming convention produces very long names,
+   which is not currently supported in the Windows version of the MRT.
+   In the case of working on Windows and running the MRT on 3D/4D data
+   products with long SDS and/or dimension names, the MRT will instead
+   use the following format:
+   <SDSname>.3_#.4_#
+
+10. Using the command-line resampler, the resample.log file can be renamed.
+    The -g option will allow the user to specify a different name for the
+    resample.log file. A full path can be specified with this name.
+
+11. The MRT is not currently handling data that are very close to or straddle
+    the International dateline. We are working on a fix for this problem. This
+    has mainly been reported in the MOD13A1 data products.
+
+12. The MOD09GHK data products have output the data attributes in a different
+    order than the image data itself. The MRT had made the assumption that the
+    data attributes would be output in the same order as the image data. This
+    causes a problem in the MOD09GHK data files, but only with the last SDS
+    which is the number of observations. We are working on a work-around for
+    this problem.
+
+
+Version 1.2 (May 2001)
+----------------------
+1. In Version 1.1 we introduced a spatial subsetting (Lat/Long) stipulation 
+   that the UL corner should be to the left of the LR corner. This was an 
+   invalid assumption and has been removed in Version 1.2.
+
+2. In the resampling process when a pixel falls outside the image boundary,
+   previous versions of the MRT assigned this pixel a value of zero.
+   Version 1.2 now uses the Background Fill Value for pixels that fall
+   outside the image boundary. If the Background Fill Value is not available,
+   then a value outside of the Valid Range is used. If the Valid Range is not
+   available, then the pixel is assigned a value of zero.
+
+3. For the HDF-EOS output images, the Dataset Attributes have been carried
+   through. These attributes include: long_name, units, valid_range,
+   _FillValue, Nadir Data Resolution, scale_factor, scale_factor_err,
+   add_offset, add_offset_err, and calibrated_nt. Since these attributes
+   are not supported in the raw binary header, the scale_factor and 
+   offset are output as comments at the end of the raw binary header file.
+
+4. Bug fix: When specifying a new input file and output information,
+   selecting Geographic as the Output Projection Type did not show 
+   the units (arc-sec) in the Output Pixel Size Units box. Fixed.
+
+5. Back due to popular demand! The command "resample -h file.hdf" produces
+   a raw binary header file named TmpHdr.hdr from an HDF-EOS file (file.hdf).
+   This functionality was previously available via the command "hdf2hdr",
+   which is no longer included in the distribution.
+
+
+Version 1.1 (April 2001)
+------------------------
+1. Windows version of MRT GUI now runs similarly to UNIX platforms.
+
+2. Installation script is more robust, provides more defaults.
+
+3. New command-line options: -u UTM_zone and -x pixel_size
+
+4. Bug fixes:
+   a. Resampler failed for HDF-EOS input, raw binary output. Fixed.
+   b. Spatial subsetting was incorrect. Fixed.
+
+5. Reorganized directory structure. Old geolib/gctp and geolib/geolib
+   subdirectories are now just gctp and geolib.
+
+
+Version 1.0 (March 2001)
+------------------------
+1. First public release.
+
+2. Installation scripts provided.
+
+3. Switched from DJGPP compiler to CygWin compiler on Windows, solved long 
+   filename problem on Windows NT.
+
+4. Many added capabilities and bug fixes from beta release.
+
+5. Windows version of MRT GUI runs differently than UNIX versions
+   (to run resampler, must exit GUI, open a DOS box, then restart GUI).
+
+

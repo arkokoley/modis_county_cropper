@@ -1,0 +1,105 @@
+Modis Reprojection Tool README
+------------------------------
+The MRT directory structure stores each application in a separate directory,
+with a separate Makefile for each application.  Shared modules reside in the
+shared_src directory, which also contains any include files that are specific
+to the shared modules.  The COTS/GOTS libraries (szip, hdf, hdfeos, tiff,
+geotiff, jpeg, zlib) reside in the libs directory and associated includes
+reside in the include directory.  (No source code will be packaged with the
+MRT for the COTS/GOTS libraries.  Only the libraries will be provided.  The
+user can freely obtain the source code for all these libraries via the web.)
+The local gctp and geotiff libraries and header files reside in the gctp and
+geolib directories.
+
+In general, here's the MRT directory structure:
+
+application directories - Contain source and include files that are specific
+  to that particular application (append_meta, dumpmeta, hdf2rb, hdflist,
+  mrtmosaic, resample, sdslist, update_tile_meta.)
+shared_src - Contains modules and include files shared by many of the
+  applications.
+gctp - Contains GCTP source code, include files, and built libraries.
+geolib - Contains Geolib source code, include files, and built libraries.
+lib - Contains the external COTS/GOTS libraries used by the project (hdf4,
+  hdfeos2, tiff, geotiff, zlib, szip, jpeg).
+include - Contains the header files for the external COTS/GOTS libraries.
+bin - Contains the executables for each MRT application.  Also contains the
+  .jar and icon files for the GUI, along with the world.jpg image.  For
+  windows, the cygwin1.dll file must reside in this directory.  In addition,
+  some simple test data resides in the directory.
+data - Contains the datum and spheroid text files that will be used by GCTP. 
+doc - Contains the User's Guide and Release Notes for the project.
+JavaGuiSrc - Contains the Java source code for the GUI.
+
+Building the source code
+------------------------
+The MRT is packaged with pre-compiled binaries for each platform.  If the
+user desires to compile the source code on their local machine, the source
+should be built in the following order.
+
+1. Obtain (or build) libraries for jpeg, szip, zlib, tiff, geotiff, hdf,
+   and hdfeos.  These are provided for our supported platforms in the lib
+   directory.
+2. Build the gctp library.
+3. Build the geolib library.
+4. Build the MRT library in shared_src.
+5. Build the applications: append_meta, dumpmeta, hdflist, sdslist,
+     update_tile_meta, hdf2rb, mrtmosaic, resample.
+
+The gctp, geolib, and MRT libraries and include files should remain in
+their particular directory.  Thus 'make install' will do nothing.  The
+executables for each of the applications need to be moved to the bin
+directory, and 'make install' will handle that appropriately.
+
+Platform specific info
+----------------------
+SGI/IRIX - These platforms commonly don't come with the GNU CC compiler, so
+  the CC definition in the Makefile may need to be changed to cc instead of
+  gcc.  If the compiler does not support the -s option, then compile without
+  -s.  After compiling, run "strip <executable>".
+SUN/SOLARIS - An additional library must be linked in before the math library.
+  Thus "-lm -s" needs to be "-lnsl -s".
+
+GNUMakefile
+-----------
+Using gmake (and make on systems where make and gmake are linked to each
+other) will automatically pick up the GNUMakefile.  This makefile is mainly
+for the EROS developers to be used during development.  It automatically
+detects the users platform and sets up the environment variables appropriately
+based on the users platform, specifically for pointing to the appropriate
+vendor libraries and include files as well as for certain build libraries.
+
+In order to build the software in the EROS environment using the GNUmakefiles,
+there must be a script or program called .mrt_config that resides in the home
+directory that returns either nothing, TS1, or TS1_DEBUG.  This script can be
+as simple as containing a single line such as 'echo $MRT_DEV_MODE'.  In this
+case you need to set your MRT_DEV_MODE environment variable to "TS1".  If you
+want your CFLAGS set for debug, then set the environment variable to
+"TS1_DEBUG".  As an alternative, if you do not want to use the MRT_DEV_MODE
+environment variable (which is used for other things as well), then you could
+use the line 'echo "TS1"' in the ~/.mrt_config script.  Make sure the
+~/.mrt_config script is executable.
+
+Various Environment Variables
+-----------------------------
+
+Used for internal development.
+
+MRT_DEV_HOME         Points to the top level MRT development directory.
+MRT_DEV_MODE         Uses GNU make to compile debug or not and whether for OPS
+                     or TS1.  The difference is that in TS1 mode, additional
+                     programs (e.g. fcgtiff, revendian, gtiff_composite) are
+                     also compiled. Valid values are TS1, DEBUG, or TS1_DEBUG.
+MRT_LIB_INSTALL      Points to the top level "installed" third party directory
+                     where the headers, libraries, man pages, executables, etc.
+                     reside.  Used when running the MRT_config scripts.
+MRT_DEV_INSTALL_HOME Points to the top level MRT_Install directory.
+MRT_TEST_DIR         Points to the MRT_Test directory which contains the 
+                     autotest script, golden files, test case parameter files, 
+                     and test case input files.
+
+
+Autotest
+--------
+The autotest script and files were moved to MRT_Test.
+

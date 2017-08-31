@@ -1,0 +1,37 @@
+# MOD09.PRM - parameter file for testing resampler
+# JMW 11/01/00
+
+INPUT_FILENAME = mod09ghk.hdf
+
+SPECTRAL_SUBSET = ( 1 0 1 0 0 0 0 0 0 0 )
+
+SPATIAL_SUBSET_UL_CORNER = ( 37.0 -120.527874 )
+SPATIAL_SUBSET_LR_CORNER = ( 33.0 -113.921841 )
+
+OUTPUT_FILENAME = mod09out.hdf
+
+RESAMPLING_TYPE = BI
+
+# Lambert Azimuthal projection
+OUTPUT_PROJECTION_TYPE = LA
+
+OUTPUT_PROJECTION_PARAMETERS = ( 0.0 0.0 0.0 0.0 -100.0 45.0 0.0 0.0
+    0.0 0.0 0.0 0.0 0.0 0.0 0.0 )
+
+# Geographic
+# OUTPUT_PROJECTION_TYPE = GEO
+
+# OUTPUT_PROJECTION_PARAMETERS = ( 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+#     0.0 0.0 0.0 0.0 0.0 0.0 0.0 )
+
+# UTM
+# OUTPUT_PROJECTION_TYPE = UTM
+
+# UTM zone 11:
+# OUTPUT_PROJECTION_PARAMETERS =          # 15 UTM proj params
+#     ( -116.5 37.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 )
+
+# UTM_ZONE = 10
+
+OUTPUT_PIXEL_SIZE = 1000
+
